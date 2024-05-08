@@ -85,6 +85,12 @@ app.get('/api/createUser',(req, res) => {
 })
 
 
+app.get('/api/helloYou',(req, res) => {
+  console.log('hello there')
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ message: 'hello successfully' }));
+})
+
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
