@@ -1,5 +1,5 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const{mongoUrl,PORT} = require('./configs/.env')
+const{mongoUrl,PORT} = require('./.env')
 const express = require('express');
 const app = express();
 
