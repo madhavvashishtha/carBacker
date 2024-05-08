@@ -45,7 +45,7 @@ async function run() {
 
 
 app.get('/api/createUser',(req, res) => {
-  if (req.url === '/createUser' ) {//&& req.method === 'POST'
+  if (true ) {//req.url === '/createUser' && req.method === 'POST'
       let body = '';
       req.on('data', chunk => {
           body += chunk.toString();
