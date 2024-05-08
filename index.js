@@ -4,6 +4,10 @@ const express = require('express');
 const app = express();
 const sec='23'
 
+const http = require('http');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+
 //console.log(`Your port is ${process.env.PORT}`); // undefined
 //const dotenv = require('dotenv');
 //const config = dotenv.config();
