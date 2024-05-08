@@ -85,7 +85,7 @@ app.get('/api/createUser',(req, res) => {
 })
 
 
-app.listen(PORT, () => {
-  //console.log(`Server running at http://localhost:${PORT}`);
-});
-run().catch(console.dir);
+//app.listen(PORT, () => {
+//  //console.log(`Server running at http://localhost:${PORT}`);
+//});
+//run().catch(console.dir);
