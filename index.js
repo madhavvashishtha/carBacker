@@ -45,7 +45,7 @@ async function run() {
 
 
 app.get('/api/createUser',(req, res) => {
-  if (req.url === '/createUser' && req.method === 'POST') {
+  if (req.url === '/createUser' ) {//&& req.method === 'POST'
       let body = '';
       req.on('data', chunk => {
           body += chunk.toString();
@@ -63,7 +63,7 @@ app.get('/api/createUser',(req, res) => {
               bcrypt.hash(userData.password, 10, (err, hash) => {
                   if (err) {
                       res.writeHead(500, { 'Content-Type': 'application/json' });
-                      res.end(JSON.stringify({ message: 'Internal Server Error' }));
+                      res.end(JSON.stringify({ message: 'Internal Server Error bi2' }));
                       client.close();
                       return;
                   }
