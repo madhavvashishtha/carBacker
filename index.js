@@ -1,12 +1,19 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const{mongoUrl,PORT} = require('./.env')
+const {mongoUrl} = require('./.env')
 const express = require('express');
 const app = express();
+
+//console.log(`Your port is ${process.env.PORT}`); // undefined
+//const dotenv = require('dotenv');
+//const config = dotenv.config();
+//console.log(`Your port is ${process.env.PORT}`);
 
 const dbName = 'Cluster0';
 
 
-const uri = mongoUrl;
+const uri = 'mongodb+srv://madhav314159:rcilybQqqZyRXpt1@cluster0.nw8qfuz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';;
+//console.log(uri)
+const PORT= 5000;
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -21,8 +28,8 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    await client.db(dbName).command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!"+uri);
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();
@@ -78,4 +85,4 @@ app.get('/api/createUser',(req, res) => {
 app.listen(PORT, () => {
   //console.log(`Server running at http://localhost:${PORT}`);
 });
-//run().catch(console.dir);
+run().catch(console.dir);
