@@ -6,7 +6,7 @@ const sec='23'
 
 const http = require('http');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 //console.log(`Your port is ${process.env.PORT}`); // undefined
 //const dotenv = require('dotenv');
@@ -82,7 +82,7 @@ app.get('/api/createUser',(req, res) => {
               });
           });
       });
-  } else {
+  } else {//
       res.writeHead(404, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ message: 'Not Found' }));
   }
