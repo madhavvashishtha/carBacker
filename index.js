@@ -59,7 +59,7 @@ app.get('/api/createUser',(req, res) => {
                   return;
               }
               const db = client.db(dbName);
-              const users = db.collection('users');
+              const users = db.collection('usersAll');
               bcrypt.hash(userData.password, 10, (err, hash) => {
                   if (err) {
                       res.writeHead(500, { 'Content-Type': 'application/json' });
