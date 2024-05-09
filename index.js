@@ -54,7 +54,7 @@ try {
         } else {
           //  const token = jwt.sign({ username: user.username }, 'secretKey', { expiresIn: '1h' });
             res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ message: 'User created successfully', token: token }));
+            res.end(JSON.stringify({ message: 'User created successfully', token: 'token' }));
         }
         client.close();
     });
