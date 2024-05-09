@@ -42,6 +42,29 @@ async function run() {
 }
 
 
+app.get('/api/puchuserData',(req, res) => {
+try {
+    const db = client.db(dbName);
+    const users = db.collection('userGenAll');
+    const user = { username: 'expuser001', password: 'this Is Supposedto be Has' };
+    users.insertOne(user, (err, result) => {
+        if (err) {
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ message: 'Internal Server Error' }));
+        } else {
+          //  const token = jwt.sign({ username: user.username }, 'secretKey', { expiresIn: '1h' });
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ message: 'User created successfully', token: token }));
+        }
+        client.close();
+    });
+} catch (error) {
+  res.writeHead(400, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ message: 'upFront Error ' }));
+  
+}
+})
+
 
 
 app.get('/api/createUser',(req, res) => {
