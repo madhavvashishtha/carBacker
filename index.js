@@ -103,13 +103,13 @@ app.get('/api/createUser',(req, res) => {
                       client.close();
                       return;
                   }
-                  const user = { username: userData.username, password: hash };
+                  const user = { username: userData.username,role:userData.role, password: hash };
                   users.insertOne(user, (err, result) => {
                       if (err) {
                           res.writeHead(500, { 'Content-Type': 'application/json' });
                           res.end(JSON.stringify({ message: 'Internal Server Error' }));
                       } else {
-                          const token = jwt.sign({ username: user.username }, 'secretKey', { expiresIn: '1h' });
+                          const token = jwt.sign({ username: user.username,role:user.role }, 'secretKey', { expiresIn: '1h' });
                           res.writeHead(200, { 'Content-Type': 'application/json' });
                           res.end(JSON.stringify({ message: 'User created successfully', token: token }));
                       }
