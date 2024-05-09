@@ -129,7 +129,7 @@ app.get('/api/createUser',(req, res) => {
 app.get('/api/helloYou',(req, res) => {
   console.log('hello there')
   res.writeHead(200, { 'Content-Type': 'application/json' });
-  res.send("okMessahe")
+ 
   res.end(JSON.stringify({ message: 'hello successfully' }));
 })
 
