@@ -79,6 +79,51 @@ try {
 })
 
 
+app.post('/api/createUserpost',(req, res) => {
+  if (true ) {//req.url === '/createUser' && req.method === 'POST'
+      let body = '';
+      req.on('data', chunk => {
+          body += chunk.toString();
+      });
+      req.on('end', () => {
+          const userData = JSON.parse(body);
+        //  client.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
+        //      if (err) {
+        //          res.writeHead(500, { 'Content-Type': 'application/json' });
+        //          res.end(JSON.stringify({ message: 'Internal Server Error' }));
+        //          return;
+        //      }
+              const db = client.db(dbName);
+              const users = db.collection('userGenAll');
+              bcrypt.hash(userData.password, 10, (err, hash) => {
+                  if (err) {
+                      res.writeHead(500, { 'Content-Type': 'application/json' });
+                      res.end(JSON.stringify({ message: 'Internal Server Error bi2' }));
+                      client.close();
+                      return;
+                  }
+                  const user = { username: userData.username,role:userData.role, password: hash };
+                  users.insertOne(user, (err, result) => {
+                      if (err) {
+                          res.writeHead(500, { 'Content-Type': 'application/json' });
+                          res.end(JSON.stringify({ message: 'Internal Server Error' }));
+                      } else {
+                          const token = jwt.sign({ username: user.username,role:user.role }, 'secretKey', { expiresIn: '1h' });
+                          res.writeHead(200, { 'Content-Type': 'application/json' });
+                        
+                          res.end(JSON.stringify({ message: 'User created successfully', token: token }));
+                      }
+                      client.close();
+                  });
+              });
+         // });
+      });
+  } else {//
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ message: 'Not Found' }));
+  }
+})
+
 
 app.get('/api/createUser',(req, res) => {
   if (true ) {//req.url === '/createUser' && req.method === 'POST'
