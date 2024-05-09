@@ -99,7 +99,7 @@ app.get('/api/createUser',(req, res) => {
       });
       req.on('end', () => {
           const userData = JSON.parse(body);
-          client.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
+          client.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
               if (err) {
                   res.writeHead(500, { 'Content-Type': 'application/json' });
                   res.end(JSON.stringify({ message: 'Internal Server Error' }));
