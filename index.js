@@ -95,7 +95,11 @@ app.get('/api/helloYou',(req, res) => {
   res.end(JSON.stringify({ message: 'hello successfully' }));
 })
 
-app.listen(PORT, () => {
+var server =app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
+
 });
+
+server.keepAliveTimeout = 120000; //server.keepAliveTimeout and server.headersTimeout
+server.headersTimeout   = 120000;
 //run().catch(console.dir);
