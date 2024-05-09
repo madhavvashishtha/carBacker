@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 const sec='23'
 
-const http = require('http');
+//const http = require('http');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
@@ -33,8 +33,10 @@ var server =app.listen(PORT, () => {
 
 });
 
-server.keepAliveTimeout = 120000; //server.keepAliveTimeout and server.headersTimeout
-server.headersTimeout   = 120000;
+
+server.setTimeout(600000);
+//server.keepAliveTimeout = 120000; //server.keepAliveTimeout and server.headersTimeout
+//server.headersTimeout   = 120000;
 
 
 async function run() {
@@ -51,29 +53,6 @@ async function run() {
 }
 
 
-exports.register = function(req, res) {
-
-  try {
-    const db = client.db(dbName);
-    const users = db.collection('userGenAll');
-    const user = { username: 'expuser001', password: 'this Is Supposedto be Has' };
-    users.insertOne(user, (err, result) => {
-        if (err) {
-           // res.writeHead(500, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ message: 'Internal Server Error' }));
-        } else {
-          //  const token = jwt.sign({ username: user.username }, 'secretKey', { expiresIn: '1h' });
-          //  res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ message: 'User created successfully', token: 'token' }));
-        }
-        client.close();
-    });
-} catch (error) {
-  res.writeHead(400, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify({ message: 'upFront Error '+error }));
-  
-}
-};
 
 app.get('/api/puchuserData02',(req, res) => {
 try {
