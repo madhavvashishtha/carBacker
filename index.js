@@ -110,7 +110,7 @@ app.post('/api/createUserpost',(req, res) => {
                       } else {
                           const token = jwt.sign({ username: user.username,role:user.role }, 'secretKey', { expiresIn: '1h' });
                           res.writeHead(200, { 'Content-Type': 'application/json' });
-                        
+                          res.send({ "name": "GeeksforGeeks" });
                           res.end(JSON.stringify({ message: 'User created successfully', token: token }));
                       }
                       client.close();
