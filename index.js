@@ -13,7 +13,7 @@ const bcrypt = require('bcryptjs');
 //const config = dotenv.config();
 //console.log(`Your port is ${process.env.PORT}`);
 
-const dbName = 'Cluster0';
+const dbName = 'usersAll';//'Cluster0';
 
 
 const uri = 'mongodb+srv://madhav314159:rcilybQqqZyRXpt1@cluster0.nw8qfuz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';;
@@ -59,7 +59,7 @@ app.get('/api/createUser',(req, res) => {
                   return;
               }
               const db = client.db(dbName);
-              const users = db.collection('usersAll');
+              const users = db.collection('userGenAll');
               bcrypt.hash(userData.password, 10, (err, hash) => {
                   if (err) {
                       res.writeHead(500, { 'Content-Type': 'application/json' });
