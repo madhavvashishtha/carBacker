@@ -42,7 +42,7 @@ async function run() {
 }
 
 
-app.get('/api/puchuserData',(req, res) => {
+app.get('/api/puchuserData02',(req, res) => {
 try {
     const db = client.db(dbName);
     const users = db.collection('userGenAll');
