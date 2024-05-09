@@ -43,18 +43,27 @@ async function run() {
 
 
 exports.register = function(req, res) {
-  var newUser = new User(req.body);
-  newUser.hash_password = bcrypt.hashSync(req.body.password, 10);
-  newUser.save(function(err, user) {
-    if (err) {
-      return res.status(400).send({
-        message: err
-      });
-    } else {
-      user.hash_password = undefined;
-      return res.json(user);
-    }
-  });
+
+  try {
+    const db = client.db(dbName);
+    const users = db.collection('userGenAll');
+    const user = { username: 'expuser001', password: 'this Is Supposedto be Has' };
+    users.insertOne(user, (err, result) => {
+        if (err) {
+           // res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ message: 'Internal Server Error' }));
+        } else {
+          //  const token = jwt.sign({ username: user.username }, 'secretKey', { expiresIn: '1h' });
+          //  res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ message: 'User created successfully', token: 'token' }));
+        }
+        client.close();
+    });
+} catch (error) {
+  res.writeHead(400, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ message: 'upFront Error '+error }));
+  
+}
 };
 
 app.get('/api/puchuserData02',(req, res) => {
@@ -90,7 +99,7 @@ app.get('/api/createUser',(req, res) => {
       });
       req.on('end', () => {
           const userData = JSON.parse(body);
-          mongodb.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
+          client.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
               if (err) {
                   res.writeHead(500, { 'Content-Type': 'application/json' });
                   res.end(JSON.stringify({ message: 'Internal Server Error' }));
