@@ -95,7 +95,7 @@ app.post('/api/createUserpost',(req, res) => {
         //      }
               const db = client.db(dbName);
               const users = db.collection('userGenAll');
-              bcrypt.hash(userData.password, 10, (err, hash) => {
+              bcrypt.hash(userData.password, 10, async (err, hash) => {
                   if (err) {
                       res.writeHead(500, { 'Content-Type': 'application/json' });
                       res.end(JSON.stringify({ message: 'Internal Server Error bi2' }));
@@ -103,7 +103,7 @@ app.post('/api/createUserpost',(req, res) => {
                       return;
                   }
                   const user = { username: userData.username,role:userData.role, password: hash };
-                  users.insertOne(user, (err, result) => {
+                 await users.insertOne(user, (err, result) => {
                       if (err) {
                           res.writeHead(500, { 'Content-Type': 'application/json' });
                           res.end(JSON.stringify({ message: 'Internal Server Error' }));
