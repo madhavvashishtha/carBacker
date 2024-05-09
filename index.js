@@ -85,10 +85,10 @@ app.post('/api/createUserpost',(req, res) => {
       req.on('data', chunk => {
           body += chunk.toString();
       });
-      req.on('end', () => {
+      req.on('end', async () => {
           const userData = JSON.parse(body);
   
-              const db = client.db(dbName);
+              const db =  client.db(dbName);
               const users = db.collection('userGenAll');
               bcrypt.hash(userData.password, 10, async (err, hash) => {
                   if (err) {
@@ -98,12 +98,12 @@ app.post('/api/createUserpost',(req, res) => {
                       return;
                   }
                   const user = { username: userData.username,role:userData.role, password: hash };
-                 await users.insertOne(user, (err, result) => {
+                 await users.insertOne(user,  (err, result) => {
                       if (err) {
                           res.writeHead(500, { 'Content-Type': 'application/json' });
                           res.end(JSON.stringify({ message: 'Internal Server Error' }));
                       } else {
-                          const token = jwt.sign({ username: user.username,role:user.role }, 'secretKey', { expiresIn: '1h' });
+                          const token =  jwt.sign({ username: user.username,role:user.role }, 'secretKey', { expiresIn: '1h' });
                         //  res.send({ "name": "gggggggggggg" });
                           res.writeHead(200,
                             {
@@ -115,7 +115,7 @@ app.post('/api/createUserpost',(req, res) => {
                             ;//200, { 'Content-Type': 'application/json' });
                           //
                       
-                          res.end(token);//JSON.stringify({ message: 'User created successfully', token: token }));
+                          res.send(token);//JSON.stringify({ message: 'User created successfully', token: token }));
                       }
                       client.close();
                   });
