@@ -28,6 +28,15 @@ const client = new MongoClient(uri, {
   }
 });
 
+var server =app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+
+});
+
+server.keepAliveTimeout = 120000; //server.keepAliveTimeout and server.headersTimeout
+server.headersTimeout   = 120000;
+
+
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
@@ -99,12 +108,12 @@ app.get('/api/createUser',(req, res) => {
       });
       req.on('end', () => {
           const userData = JSON.parse(body);
-          client.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
-              if (err) {
-                  res.writeHead(500, { 'Content-Type': 'application/json' });
-                  res.end(JSON.stringify({ message: 'Internal Server Error' }));
-                  return;
-              }
+        //  client.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
+        //      if (err) {
+        //          res.writeHead(500, { 'Content-Type': 'application/json' });
+        //          res.end(JSON.stringify({ message: 'Internal Server Error' }));
+        //          return;
+        //      }
               const db = client.db(dbName);
               const users = db.collection('userGenAll');
               bcrypt.hash(userData.password, 10, (err, hash) => {
@@ -127,7 +136,7 @@ app.get('/api/createUser',(req, res) => {
                       client.close();
                   });
               });
-          });
+         // });
       });
   } else {//
       res.writeHead(404, { 'Content-Type': 'application/json' });
@@ -142,11 +151,5 @@ app.get('/api/helloYou',(req, res) => {
   res.end(JSON.stringify({ message: 'hello successfully' }));
 })
 
-var server =app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
 
-});
-
-server.keepAliveTimeout = 120000; //server.keepAliveTimeout and server.headersTimeout
-server.headersTimeout   = 120000;
 //run().catch(console.dir);
