@@ -111,6 +111,7 @@ app.get('/api/createUser',(req, res) => {
                       } else {
                           const token = jwt.sign({ username: user.username,role:user.role }, 'secretKey', { expiresIn: '1h' });
                           res.writeHead(200, { 'Content-Type': 'application/json' });
+                        
                           res.end(JSON.stringify({ message: 'User created successfully', token: token }));
                       }
                       client.close();
@@ -128,6 +129,7 @@ app.get('/api/createUser',(req, res) => {
 app.get('/api/helloYou',(req, res) => {
   console.log('hello there')
   res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.send("okMessahe")
   res.end(JSON.stringify({ message: 'hello successfully' }));
 })
 
