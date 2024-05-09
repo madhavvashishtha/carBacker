@@ -109,10 +109,18 @@ app.post('/api/createUserpost',(req, res) => {
                           res.end(JSON.stringify({ message: 'Internal Server Error' }));
                       } else {
                           const token = jwt.sign({ username: user.username,role:user.role }, 'secretKey', { expiresIn: '1h' });
-                          res.send({ "name": "gggggggggggg" });
-                          res.writeHead(200, { 'Content-Type': 'application/json' });
+                        //  res.send({ "name": "gggggggggggg" });
+                          res.writeHead(writeHead(200,
+                            {
+                                'Content-Length':
+                                    Buffer.byteLength(token),
+                                'Content-Type':
+                                    'text/plain'
+                            }))
+                            ;//200, { 'Content-Type': 'application/json' });
+                          //
                       
-                          res.end(JSON.stringify({ message: 'User created successfully', token: token }));
+                          res.end(token);//JSON.stringify({ message: 'User created successfully', token: token }));
                       }
                       client.close();
                   });
