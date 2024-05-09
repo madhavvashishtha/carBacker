@@ -79,47 +79,38 @@ try {
 })
 
 
-app.post('/api/createUserpost',(req, res) => {
+app.post('/api/createUserpost',async (req, res) => {
+  try {
+   // if (req.url === '/createUser' && req.method === 'POST') {
   if (true ) {//req.url === '/createUser' && req.method === 'POST'
-      let body = '';
-      req.on('data', chunk => {
-          body += chunk.toString();
-      });
-      req.on('end', async () => {
-          const userData = JSON.parse(body);
-  
-              const db =  client.db(dbName);
-              const users = db.collection('userGenAll');
-              bcrypt.hash(userData.password, 10, async (err, hash) => {
-                  if (err) {
-                      res.writeHead(500, { 'Content-Type': 'application/json' });
-                      res.end(JSON.stringify({ message: 'Internal Server Error bi2' }));
-                      client.close();
-                      return;
-                  }
-                  const user = { username: userData.username,role:userData.role, password: hash };
-                 await users.insertOne(user,  (err, result) => {
-                      if (err) {
-                          res.writeHead(500, { 'Content-Type': 'application/json' });
-                          res.end(JSON.stringify({ message: 'Internal Server Error' }));
-                      } else {
-                          const token =  jwt.sign({ username: user.username,role:user.role }, 'secretKey', { expiresIn: '1h' });
-                        //  res.send({ "name": "gggggggggggg" });
-                        res.setHeader('Content-Type', 'text/plain');
-                        res.setHeader('Content-Length', Buffer.byteLength(token));
-                        res.status(200).send(token);
-                        //JSON.stringify({ message: 'User created successfully', token: token }));
-                      }
-                      client.close();
-                  });
-              });
-         // });
-      });
-  } else {//
-      res.writeHead(404, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ message: 'Not Found' }));
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk.toString();
+    });
+    await new Promise((resolve, reject) => {
+      req.on('end', resolve);
+      req.on('error', reject);
+    });
+
+    const userData = JSON.parse(body);
+    const db = client.db(dbName);
+    const users = db.collection('userGenAll');
+    const hash = await bcrypt.hash(userData.password, 10);
+    const user = { username: userData.username, role: userData.role, password: hash };
+    const result = await users.insertOne(user);
+    const token = jwt.sign({ username: user.username, role: user.role }, 'secretKey', { expiresIn: '1h' });
+
+    res.setHeader('Content-Type', 'text/plain');
+    res.setHeader('Content-Length', Buffer.byteLength(token));
+    res.status(200).send(token);
+  } else {
+    res.status(404).json({ message: 'Not Found' });
   }
-})
+} catch (error) {
+  console.error(error);
+  res.status(500).json({ message: 'Internal Server Error' });
+}
+});
 
 
 app.get('/api/createUser',(req, res) => {
