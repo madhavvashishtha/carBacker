@@ -16,7 +16,7 @@ const bcrypt = require('bcryptjs');
 const dbName = 'usersAll';//'Cluster0';
 
 
-const uri = 'mongodb+srv://madhav314159:rcilybQqqZyRXpt1@cluster0.nw8qfuz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';;
+const uri = 'mongodb+srv://madhav314159:rcilybQqqZyRXpt1@cluster0.nw8qfuz.mongodb.net/usersAll?retryWrites=true&w=majority&appName=Cluster0';;
 //console.log(uri)
 const PORT= 5000;
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -77,8 +77,8 @@ exports.register = function(req, res) {
 
 app.get('/api/puchuserData02',(req, res) => {
 try {
-    const db = client.db(dbName);
-    const users = db.collection('userGenAll');
+   // const db = client.db(dbName);
+    const users = client.db('usersAll').collection('userGenAll');
     const user = { username: 'expuser001', password: 'this Is Supposedto be Has' };
     users.insertOne(user, (err, result) => {
         if (err) {
