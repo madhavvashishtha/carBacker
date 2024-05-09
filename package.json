@@ -12,6 +12,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
+    "envs": "^0.1.6",
     "express": "^4.19.2",
     "git": "^0.1.5",
     "git-all": "^0.0.3",
