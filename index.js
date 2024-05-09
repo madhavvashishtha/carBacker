@@ -87,12 +87,7 @@ app.post('/api/createUserpost',(req, res) => {
       });
       req.on('end', () => {
           const userData = JSON.parse(body);
-        //  client.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
-        //      if (err) {
-        //          res.writeHead(500, { 'Content-Type': 'application/json' });
-        //          res.end(JSON.stringify({ message: 'Internal Server Error' }));
-        //          return;
-        //      }
+  
               const db = client.db(dbName);
               const users = db.collection('userGenAll');
               bcrypt.hash(userData.password, 10, async (err, hash) => {
@@ -110,13 +105,13 @@ app.post('/api/createUserpost',(req, res) => {
                       } else {
                           const token = jwt.sign({ username: user.username,role:user.role }, 'secretKey', { expiresIn: '1h' });
                         //  res.send({ "name": "gggggggggggg" });
-                          res.writeHead(writeHead(200,
+                          res.writeHead(200,
                             {
                                 'Content-Length':
                                     Buffer.byteLength(token),
                                 'Content-Type':
                                     'text/plain'
-                            }))
+                            })
                             ;//200, { 'Content-Type': 'application/json' });
                           //
                       
