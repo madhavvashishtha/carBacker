@@ -105,17 +105,10 @@ app.post('/api/createUserpost',(req, res) => {
                       } else {
                           const token =  jwt.sign({ username: user.username,role:user.role }, 'secretKey', { expiresIn: '1h' });
                         //  res.send({ "name": "gggggggggggg" });
-                          res.writeHead(200,
-                            {
-                                'Content-Length':
-                                    Buffer.byteLength(token),
-                                'Content-Type':
-                                    'text/plain'
-                            })
-                            ;//200, { 'Content-Type': 'application/json' });
-                          //
-                      
-                          res.send(token);//JSON.stringify({ message: 'User created successfully', token: token }));
+                        res.setHeader('Content-Type', 'text/plain');
+                        res.setHeader('Content-Length', Buffer.byteLength(token));
+                        res.status(200).send(token);
+                        //JSON.stringify({ message: 'User created successfully', token: token }));
                       }
                       client.close();
                   });
