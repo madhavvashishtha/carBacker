@@ -3,6 +3,7 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const express = require('express');
 const cors = require('cors');
 var envs = require('envs');
+const { faker } = require('@faker-js/faker');
 const app = express();
 const sec='23'
 
@@ -63,6 +64,56 @@ async function run() {
     await client.close();
   }
 }
+
+app.post('/api/fillTheFakerVichel',async (req, res) => {
+  try {
+   // if (req.url === '/createUser' && req.method === 'POST') {
+//  if (true ) {//req.url === '/createUser' && req.method === 'POST'
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk.toString();
+    });
+    await new Promise((resolve, reject) => {
+      req.on('end', resolve);
+      req.on('error', reject);
+    });
+
+    const userData = JSON.parse(body);
+   // const db = client.db(dbName);
+  //  const users = db.collection('userGenAll');
+
+   // const tokenStatVerifiy=jwt.verify(userData.token, 'secretKey');
+   // const hash = await bcrypt.hash(userData.password, 10);
+  //  const user = { username: userData.username, role: userData.role, password: hash };
+  //  const result = await users.insertOne(user);
+   // const token = jwt.sign({ username: user.username, role: user.role }, 'secretKey', { expiresIn: '1h' });
+   //let vehicleArray=[{}];
+   let result
+     for(let i=0; userData.reqNo >i ;i++){
+      let vichalPushElement={
+        colour:faker.vehicle.color() ,
+        fuel  :faker.vehicle.fuel(),
+        manufacturer: faker.vehicle.manufacturer() ,
+        model : faker.vehicle.model(),
+        vehicle :faker.vehicle.vehicle(),
+        vin :faker.vehicle.vin(),
+        vrm :faker.vehicle.vrm(),
+      }
+      const carList = db.collection('carAll');
+       result = await carList.insertOne(vichalPushElement);
+    }
+
+    res.setHeader('Content-Type', 'text/plain');
+   // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
+    res.status(200).send({result:result+'-s-'});
+ // } else {
+ //   res.status(404).json({ message: 'Not Found' });
+ // }
+} catch (error) {
+  console.error(error);
+  res.status(500).json({ message: 'Internal Server Error' +error});
+}
+});
 
 
 
