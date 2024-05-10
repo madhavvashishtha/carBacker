@@ -112,14 +112,14 @@ app.post('/api/createUserpost',async (req, res) => {
     const token = jwt.sign({ username: user.username, role: user.role }, 'secretKey', { expiresIn: '1h' });
 
     res.setHeader('Content-Type', 'text/plain');
-    res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
+   // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
     res.status(200).send({tokenGet:token});
   } else {
     res.status(404).json({ message: 'Not Found' });
   }
 } catch (error) {
   console.error(error);
-  res.status(500).json({ message: 'Internal Server Error' });
+  res.status(500).json({ message: 'Internal Server Error' +error});
 }
 });
 
