@@ -120,7 +120,7 @@ app.post('/api/createUserpost',async (req, res) => {
     const db = client.db(dbName);
     const users = db.collection('userGenAll');
     const hash = await bcrypt.hash(userData.password, 10);
-    const user = { username: userData.username, role: userData.role, password: hash };
+    const user = { username: userData.username, role: userData.role, password: hash,areacode:userData.areacode };
     const result = await users.insertOne(user);
     const token = jwt.sign({ username: user.username, role: user.role }, 'secretKey', { expiresIn: '1h' });
 
