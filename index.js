@@ -66,28 +66,41 @@ async function run() {
 
 
 
-app.get('/api/puchuserData02',(req, res) => {
-try {
-   // const db = client.db(dbName);
-    const users = client.db('usersAll').collection('userGenAll');
-    const user = { username: 'expuser001', password: 'this Is Supposedto be Has' };
-    users.insertOne(user, (err, result) => {
-        if (err) {
-           // res.writeHead(500, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ message: 'Internal Server Error' }));
-        } else {
-          //  const token = jwt.sign({ username: user.username }, 'secretKey', { expiresIn: '1h' });
-          //  res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ message: 'User created successfully', token: 'token' }));
-        }
-        client.close();
+app.post('/api/pingToken',async (req, res) => {
+  try {
+   // if (req.url === '/createUser' && req.method === 'POST') {
+//  if (true ) {//req.url === '/createUser' && req.method === 'POST'
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk.toString();
     });
+    await new Promise((resolve, reject) => {
+      req.on('end', resolve);
+      req.on('error', reject);
+    });
+
+    const userData = JSON.parse(body);
+   // const db = client.db(dbName);
+  //  const users = db.collection('userGenAll');
+
+    const tokenStatVerifiy=jwt.verify(userData.token, 'secretKey');
+   // const hash = await bcrypt.hash(userData.password, 10);
+  //  const user = { username: userData.username, role: userData.role, password: hash };
+  //  const result = await users.insertOne(user);
+   // const token = jwt.sign({ username: user.username, role: user.role }, 'secretKey', { expiresIn: '1h' });
+
+    res.setHeader('Content-Type', 'text/plain');
+   // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
+    res.status(200).send({tokenStat:tokenStatVerifiy});
+ // } else {
+ //   res.status(404).json({ message: 'Not Found' });
+ // }
 } catch (error) {
-  res.writeHead(400, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify({ message: 'upFront Error '+error }));
-  
+  console.error(error);
+  res.status(500).json({ message: 'Internal Server Error' +error});
 }
-})
+});
+
 
 
 app.post('/api/createUserpost',async (req, res) => {
@@ -113,7 +126,7 @@ app.post('/api/createUserpost',async (req, res) => {
 
     res.setHeader('Content-Type', 'text/plain');
    // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
-    res.status(200).send({tokenGet:token});
+    res.status(200).send({tokenGet:token,role:userData.role,email:userData.username});
   } else {
     res.status(404).json({ message: 'Not Found' });
   }
