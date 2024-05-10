@@ -78,8 +78,8 @@ app.post('/api/hotDeals',async (req, res) => {
       req.on('error', reject);
     });
 
-    const userData = JSON.parse(body);
-    const db = client.db(dbName);
+   // const userData = JSON.parse(body);
+    //const db = client.db(dbName);
   //  const users = db.collection('userGenAll');
 
    // const tokenStatVerifiy=jwt.verify(userData.token, 'secretKey');
@@ -88,7 +88,8 @@ app.post('/api/hotDeals',async (req, res) => {
   //  const result = await users.insertOne(user);
    // const token = jwt.sign({ username: user.username, role: user.role }, 'secretKey', { expiresIn: '1h' });
    //let vehicleArray=[{}];
-   let result
+   let result;
+   let vehicleArray=[]
      for(let i=0; userData.reqNo >i ;i++){
       let vichalPushElement={
         colour:faker.vehicle.color() ,
@@ -99,13 +100,16 @@ app.post('/api/hotDeals',async (req, res) => {
         vin :faker.vehicle.vin(),
         vrm :faker.vehicle.vrm(),
       }
-      const carList = db.collection('carAll');
-       result = await carList.insertOne(vichalPushElement);
+      vehicleArray.push(vichalPushElement)
+     // const carList = db.collection('carAll');
+     // result = await carList.insertOne(vichalPushElement);
     }
 
     res.setHeader('Content-Type', 'text/plain');
    // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
-    res.status(200).send({result:result+'-s-'});
+    res.status(200).send({result:result+'-s-',
+    dealsToOffer:vehicleArray
+    });
  // } else {
  //   res.status(404).json({ message: 'Not Found' });
  // }
@@ -150,15 +154,14 @@ app.post('/api/fillTheFakerVichel',async (req, res) => {
         vin :faker.vehicle.vin(),
         vrm :faker.vehicle.vrm(),
       }
-      vehicleArray.push(vichalPushElement)
-      //const carList = db.collection('carAll');
-      // result = await carList.insertOne(vichalPushElement);
+     
+      const carList = db.collection('carAll');
+       result = await carList.insertOne(vichalPushElement);
     }
 
     res.setHeader('Content-Type', 'text/plain');
    // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
-    res.status(200).send({result:result+'-s-',
-      dealsToOffer:vehicleArray
+    res.status(200).send({result:result+'-s-'
     });
  // } else {
  //   res.status(404).json({ message: 'Not Found' });
