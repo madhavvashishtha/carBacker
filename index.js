@@ -1,10 +1,19 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
 //const {mongoUrl} = require('./.env') 
 const express = require('express');
+const cors = require('cors');
 var envs = require('envs');
 const app = express();
 const sec='23'
 
+app.use(cors());
+app.use(cors(
+  {
+    origin:["http://localhost:5173/"] ,
+    methods:"GET,POST,PUT",
+    credentials:true
+}
+))
 //const http = require('http');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
@@ -28,6 +37,8 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 });
+
+
 
 var server =app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
