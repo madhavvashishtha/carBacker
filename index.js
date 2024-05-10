@@ -177,7 +177,11 @@ app.post('/api/createUserpost',async (req, res) => {
 
     res.setHeader('Content-Type', 'text/plain');
    // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
-    res.status(200).send({tokenGet:token,role:userData.role,email:userData.username});
+    res.status(200).send({tokenGet:token,
+                          role:userData.role,
+                          email:userData.username,
+                          areacode:userData.areacode
+                        });
   } else {
     res.status(404).json({ message: 'Not Found' });
   }
