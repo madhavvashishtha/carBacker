@@ -78,7 +78,7 @@ app.post('/api/hotDeals',async (req, res) => {
       req.on('error', reject);
     });
 
-   // const userData = JSON.parse(body);
+    const userData = JSON.parse(body);
     //const db = client.db(dbName);
   //  const users = db.collection('userGenAll');
 
