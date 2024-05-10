@@ -112,7 +112,7 @@ app.post('/api/createUserpost',async (req, res) => {
     const token = jwt.sign({ username: user.username, role: user.role }, 'secretKey', { expiresIn: '1h' });
 
     res.setHeader('Content-Type', 'text/plain');
-    res.setHeader('Content-Length', Buffer.byteLength(token));
+    res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
     res.status(200).send({tokenGet:token});
   } else {
     res.status(404).json({ message: 'Not Found' });
