@@ -112,19 +112,36 @@ app.post('/api/purchageRqrInit',async (req, res) => {
    var userGrab = await db.userGenAll.findOne({email :userData.Email+'' })
      var extUserProfiDocId=userGrab._id;
 
-     db.userGenAll.updateOne(
-      { _id: ObjectId(extUserProfiDocId) },
-      { $push: { purchaceReqList: { $each: [ "element1", "element2" ] } } }
-   ).then(()=>{
-    res.setHeader('Content-Type', 'text/plain');
-    // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
-    res.status(200).send({
-                          mainLoad:userPurchagReq,
-                          DocID:extUserProfiDocId
-                         
-                        });
-     req.end();
-   })
+   
+     userDocCollat.updateOne({ email: userData.Email }, { $push: { 'arrayField': { $each: [userPurchagReq] } } }, (err, result) => {
+      if (err) {
+        //throw err;
+        res.setHeader('Content-Type', 'text/plain');
+        // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
+        res.status(400).send({
+                            error: ' failed with error'+err
+                             
+                            });
+        //    req.error();
+      
+      }
+      
+      res.setHeader('Content-Type', 'text/plain');
+      // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
+      res.status(200).send({
+                            mainLoad:userPurchagReq,
+                            DocID:extUserProfiDocId
+                           
+                          });
+       req.end();
+     // res.send('Array added to list successfully');
+     // client.close();
+    });
+
+
+
+   
+  
      
 
 
