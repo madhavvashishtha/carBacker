@@ -65,6 +65,81 @@ async function run() {
   }
 }
 
+
+
+app.post('/api/purchageRqrInit',async (req, res) => {
+  try {
+   // if (req.url === '/createUser' && req.method === 'POST') {
+  if (true ) {//req.url === '/createUser' && req.method === 'POST'
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk.toString();
+    });
+
+
+//    import { EventEmitter } from 'node:events';
+//    const myEE = new EventEmitter();
+//    myEE.on('foo', () => console.log('a'));
+//    myEE.prependListener('foo', () => console.log('b'));
+//    myEE.emit('foo');
+
+    await new Promise((resolve, reject) => {
+      req.on('end', resolve);
+      req.on('error', reject);
+    });
+
+    const userData = JSON.parse(body);
+    const db = client.db(dbName);
+    const userDocCollat    = db.collection('userGenAll');
+    const allPurchageReqsd = db.collection('userPurReq');
+   // const hash = await bcrypt.hash(userData.password, 10);
+    const userPurchagReq = {
+
+      userEmail   :userData.Email       ,
+      Model       :userData.Model       ,
+      Colour      :userData.Colour      ,
+      Fuel        :userData.Fuel        ,
+      Manufacturer:userData.Manufacturer,
+      Vehicle     :userData.Vehicle     ,
+      VIN         :userData.VIN         ,
+      VRM         :userData.VRM         ,
+      urlImg      :userData.urlImg      ,
+      Price       :userData.Price       ,
+
+     };
+   // const result = await users.insertOne(user);
+   
+   var userGrab = await db.userGenAll.findOne({email :userData.Email+'' })
+     var extUserProfiDocId=userGrab._id;
+
+     db.userGenAll.updateOne(
+      { _id: ObjectId(extUserProfiDocId) },
+      { $push: { purchaceReqList: { $each: [ "element1", "element2" ] } } }
+   ).then(()=>{
+    res.setHeader('Content-Type', 'text/plain');
+    // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
+    res.status(200).send({
+                          mainLoad:userPurchagReq,
+                          DocID:extUserProfiDocId
+                         
+                        });
+     req.end();
+   })
+     
+
+
+
+     
+   
+  } else {
+    res.status(404).json({ message: 'Not Found' });
+  }
+} catch (error) {
+  console.error(error);
+  res.status(500).json({ message: 'Internal Server Error' +error});
+}
+});
+
 app.post('/api/hotDeals',async (req, res) => {
   try {
    // if (req.url === '/createUser' && req.method === 'POST') {
@@ -92,13 +167,13 @@ app.post('/api/hotDeals',async (req, res) => {
    let vehicleArray=[]
      for(let i=0; userData.reqNo >i ;i++){
       let vichalPushElement={
-        colour:faker.vehicle.color() ,
-        fuel  :faker.vehicle.fuel(),
+        colour      :faker.vehicle.color() ,
+        fuel        :faker.vehicle.fuel(),
         manufacturer: faker.vehicle.manufacturer() ,
-        model : faker.vehicle.model(),
-        vehicle :faker.vehicle.vehicle(),
-        vin :faker.vehicle.vin(),
-        vrm :faker.vehicle.vrm(),
+        model       : faker.vehicle.model(),
+        vehicle     :faker.vehicle.vehicle(),
+        vin         :faker.vehicle.vin(),
+        vrm         :faker.vehicle.vrm(),
       }
       vehicleArray.push(vichalPushElement)
      // const carList = db.collection('carAll');
