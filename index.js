@@ -109,8 +109,8 @@ app.post('/api/purchageRqrInit',async (req, res) => {
      };
    // const result = await users.insertOne(user);
    
-   var userGrab = await db.userGenAll.findOne({email :userData.Email+'' })
-     var extUserProfiDocId=userGrab._id;
+   //var userGrab = await db.userGenAll.findOne({email :userData.Email+'' })
+   //  var extUserProfiDocId=userGrab._id;
 
    
      userDocCollat.updateOne({ email: userData.Email }, { $push: { 'arrayField': { $each: [userPurchagReq] } } }, (err, result) => {
