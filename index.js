@@ -79,8 +79,15 @@ app.post('/api/bounceThPruchReqList',async (req, res) => {
 
    await users.find({username : userData.Email}).toArray(function(err, result) {
       if (err) {
-        throw err;
+        res.status(404).send({
+          result:err, //try could be same data
+         // loadToPass:result
+          });
 
+        req.emit('error')
+
+        throw err;
+       
       }
      // console.log(result);
      // db.close();
@@ -90,7 +97,8 @@ app.post('/api/bounceThPruchReqList',async (req, res) => {
       result:result, //try could be same data
       loadToPass:result
       });
-                      });//await End
+      });//await End
+      req.emit('end')
   } else {
     res.status(404).json({ message: 'Not Found' });
   }
