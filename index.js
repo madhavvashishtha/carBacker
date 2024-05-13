@@ -132,7 +132,7 @@ const promise2PushInMain = new Promise(async (resolve, reject) => {
 });
 
 
-Promise.all([promise1PushInProfi, promise2PushInMain])
+await Promise.all([promise1PushInProfi, promise2PushInMain])
   .then((results) => results.forEach((result) => {
      // console.log(result)
    res.setHeader('Content-Type', 'text/plain');
