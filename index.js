@@ -95,7 +95,7 @@ app.post('/api/purchageRqrInit',async (req, res) => {
    // const hash = await bcrypt.hash(userData.password, 10);
     const userPurchagReq = {
 
-      userEmail   :userData.Email       ,
+      Email       :userData.Email       ,
       Model       :userData.Model       ,
       Colour      :userData.Colour      ,
       Fuel        :userData.Fuel        ,
@@ -113,7 +113,7 @@ app.post('/api/purchageRqrInit',async (req, res) => {
    //  var extUserProfiDocId=userGrab._id;
 
    
-     userDocCollat.updateOne({ email: userData.Email }, { $push: { 'arrayField': { $each: [userPurchagReq] } } }, (err, result) => {
+    await userDocCollat.updateOne({ email: userData.Email }, { $push: { 'arrayField': { $each: [userPurchagReq] } } }, (err, result) => {
       if (err) {
         //throw err;
         res.setHeader('Content-Type', 'text/plain');
