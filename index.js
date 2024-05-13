@@ -121,14 +121,14 @@ const promise1PushInProfi = new Promise(async (resolve,reject)=>{
     
           })
 const promise2PushInMain = new Promise(async (resolve, reject) => {
-  await allPurchageReqCollat.updateOne( {  username: userData.Email }, { $push: { 'arrayField': { $each: [userPurchagReq] } } }, (err, result) => {
+  await allPurchageReqCollat.updateOne( {  username: userData.Email }, { $push: { 'arrayField': { $each: [userPurchagReq] } } }, { upsert: true }, (err, result) => {
     if (err) {
       //throw err;
       reject();
     }
     resolve();
   
-  },{upsert: true});
+  });
 });
 
 
