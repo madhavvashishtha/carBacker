@@ -103,7 +103,7 @@ app.post('/api/purchageRqrInit',async (req, res) => {
       Vehicle     :userData.Vehicle     ,
       VIN         :userData.VIN         ,
       VRM         :userData.VRM         ,
-      urlImg      :userData.urlImg      ,
+      UrlImg      :userData.UrlImg      ,
       Price       :userData.Price       ,
 
      };
