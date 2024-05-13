@@ -105,6 +105,8 @@ app.post('/api/purchageRqrInit',async (req, res) => {
       VRM         :userData.VRM         ,
       UrlImg      :userData.UrlImg      ,
       Price       :userData.Price       ,
+      status      :'0'                  ,
+      Note        :"Under Process"
 
      };
     
