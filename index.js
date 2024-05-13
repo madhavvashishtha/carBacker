@@ -189,22 +189,20 @@ const promise2PushInMain = new Promise(async (resolve, reject) => {
 });
 
 
- await Promise.all([promise1PushInProfi, promise2PushInMain])
-  .then((results) => results.forEach((result) => {
-     // console.log(result)
-   res.setHeader('Content-Type', 'text/plain');
-   // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
-   res.status(200).send({
-                         mainLoad:userPurchagReq,
-                        // DocID:extUserProfiDocId,
-                         result:result
-                        
-                       });
-    req.emit('end');
-  }
-  ) )
-  .catch(console.error);
+const promisResult= await Promise.all([promise1PushInProfi, promise2PushInMain])
 
+res.setHeader('Content-Type', 'text/plain');
+// res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
+res.status(200).send({
+                      mainLoad:userPurchagReq,
+                     // DocID:extUserProfiDocId,
+                      result:promisResult
+                     
+                    });
+ req.emit('end');
+ 
+
+ 
    
   } else {
     res.status(404).json({ message: 'Not Found' });
