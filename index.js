@@ -60,7 +60,7 @@ async function run() {
 }
 
 
-app.post('/api/bounceThPruchReqList',async (req, res) => {
+app.get('/api/bounceThPruchReqList',async (req, res) => {
   try {
    // if (req.url === '/createUser' && req.method === 'POST') {
   if (true ) {//req.url === '/createUser' && req.method === 'POST'
