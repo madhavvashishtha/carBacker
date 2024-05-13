@@ -110,7 +110,7 @@ app.post('/api/purchageRqrInit',async (req, res) => {
   
 
    
-    await userDocCollat.updateOne({ email: userData.Email }, { $push: { 'arrayField': { $each: [userPurchagReq] } } }, (err, result) => {
+    await userDocCollat.updateOne({  username: userData.Email }, { $push: { 'arrayField': { $each: [userPurchagReq] } } }, (err, result) => {
       if (err) {
         //throw err;
         res.setHeader('Content-Type', 'text/plain');
