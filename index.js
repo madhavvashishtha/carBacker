@@ -15,14 +15,10 @@ app.use(cors(
     credentials:true
 }
 ))
-//const http = require('http');
+
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-//console.log(`Your port is ${process.env.PORT}`); // undefined
-//const dotenv = require('dotenv');
-//const config = dotenv.config();
-//console.log(`Your port is ${process.env.PORT}`);
 
 const dbName = 'usersAll';//'Cluster0';
 
@@ -48,8 +44,6 @@ var server =app.listen(PORT, () => {
 
 
 server.setTimeout(600000);
-//server.keepAliveTimeout = 120000; //server.keepAliveTimeout and server.headersTimeout
-//server.headersTimeout   = 120000;
 
 
 async function run() {
@@ -65,6 +59,46 @@ async function run() {
   }
 }
 
+
+app.post('/api/bounceThPruchReqList',async (req, res) => {
+  try {
+   // if (req.url === '/createUser' && req.method === 'POST') {
+  if (true ) {//req.url === '/createUser' && req.method === 'POST'
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk.toString();
+    });
+    await new Promise((resolve, reject) => {
+      req.on('end', resolve);
+      req.on('error', reject);
+    });
+
+    const userData = JSON.parse(body);
+    const db = client.db(dbName);
+    const users = db.collection('userGenAll');
+
+   await users.find({email : userData.Email}).toArray(function(err, result) {
+      if (err) {
+        throw err;
+
+      }
+     // console.log(result);
+     // db.close();
+   res.setHeader('Content-Type', 'text/plain');
+   // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
+    res.status(200).send({
+      result:result, //try could be same data
+      loadToPass:result
+      });
+                      });//await End
+  } else {
+    res.status(404).json({ message: 'Not Found' });
+  }
+} catch (error) {
+  console.error(error);
+  res.status(500).json({ message: 'Internal Server Error' +error});
+}
+});
 
 
 app.post('/api/purchageRqrInit',async (req, res) => {
@@ -90,7 +124,8 @@ app.post('/api/purchageRqrInit',async (req, res) => {
 
     const userData = JSON.parse(body);
     const db = client.db(dbName);
-    const userDocCollat        = db.collection('userGenAll');
+    const userDocCollat        = db.collection('userGenAll'); //thoug it is not efficent to post it at two different collation 
+                //and i am not gonna use this one at all but still posting could be useful if got lot nested and will be faster to query for 
     const allPurchageReqCollat = db.collection('userPurReq');
    // const hash = await bcrypt.hash(userData.password, 10);
     const userPurchagReq = {
@@ -112,7 +147,7 @@ app.post('/api/purchageRqrInit',async (req, res) => {
     
 const promise1PushInProfi = new Promise(async (resolve,reject)=>{
            
-    await userDocCollat.updateOne({  username: userData.Email }, { $push: { 'arrayField': { $each: [userPurchagReq] } } }, (err, result) => {
+    await userDocCollat.updateOne({  username: userData.Email }, { $push: { 'purchaseReqLis': { $each: [userPurchagReq] } } }, (err, result) => {
       if (err) {
         //throw err;
         reject();
@@ -123,7 +158,7 @@ const promise1PushInProfi = new Promise(async (resolve,reject)=>{
     
           })
 const promise2PushInMain = new Promise(async (resolve, reject) => {
-  await allPurchageReqCollat.updateOne( {  username: userData.Email }, { $push: { 'arrayField': { $each: [userPurchagReq] } } }, { upsert: true }, (err, result) => {
+  await allPurchageReqCollat.updateOne( {  username: userData.Email }, { $push: { 'purchaseReqLis': { $each: [userPurchagReq] } } }, { upsert: true }, (err, result) => {
     if (err) {
       //throw err;
       reject();
@@ -150,18 +185,6 @@ const promise2PushInMain = new Promise(async (resolve, reject) => {
   ) )
   .catch(console.error);
 
-  
-
-
-
-
-   
-  
-     
-
-
-
-     
    
   } else {
     res.status(404).json({ message: 'Not Found' });
