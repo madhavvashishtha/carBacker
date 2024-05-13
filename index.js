@@ -90,8 +90,8 @@ app.post('/api/purchageRqrInit',async (req, res) => {
 
     const userData = JSON.parse(body);
     const db = client.db(dbName);
-    const userDocCollat    = db.collection('userGenAll');
-    const allPurchageReqsd = db.collection('userPurReq');
+    const userDocCollat        = db.collection('userGenAll');
+    const allPurchageReqCollat = db.collection('userPurReq');
    // const hash = await bcrypt.hash(userData.password, 10);
     const userPurchagReq = {
 
@@ -107,32 +107,49 @@ app.post('/api/purchageRqrInit',async (req, res) => {
       Price       :userData.Price       ,
 
      };
-  
-
-   
+    
+const promise1PushInProfi = Promise(async (resolve,reject)=>{
+           
     await userDocCollat.updateOne({  username: userData.Email }, { $push: { 'arrayField': { $each: [userPurchagReq] } } }, (err, result) => {
       if (err) {
         //throw err;
-        res.setHeader('Content-Type', 'text/plain');
-        // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
-        res.status(400).send({
-                            error: ' failed with error'+err
-                             
-                            });
-        //    req.error();
-      
+        reject();
       }
-      
-      res.setHeader('Content-Type', 'text/plain');
-      // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
-      res.status(200).send({
-                            mainLoad:userPurchagReq,
-                            DocID:extUserProfiDocId
-                           
-                          });
-       req.end();
-   
+      resolve();
+    
     });
+    
+          })
+const promise2PushInMain = new Promise(async (resolve, reject) => {
+  await allPurchageReqCollat.updateOne( {  username: userData.Email }, { $push: { 'arrayField': { $each: [userPurchagReq] } } }, (err, result) => {
+    if (err) {
+      //throw err;
+      reject();
+    }
+    resolve();
+  
+  },{upsert: true});
+});
+
+
+Promise.all([promise1PushInProfi, promise2PushInMain])
+  .then((results) => results.forEach((result) => {
+     // console.log(result)
+   res.setHeader('Content-Type', 'text/plain');
+   // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
+   res.status(200).send({
+                         mainLoad:userPurchagReq,
+                         DocID:extUserProfiDocId,
+                         result:result
+                        
+                       });
+    req.emit('end');
+  }
+  ) )
+  .catch(console.error);
+
+  
+
 
 
 
