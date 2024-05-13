@@ -108,7 +108,7 @@ app.post('/api/purchageRqrInit',async (req, res) => {
 
      };
     
-const promise1PushInProfi = Promise(async (resolve,reject)=>{
+const promise1PushInProfi = new Promise(async (resolve,reject)=>{
            
     await userDocCollat.updateOne({  username: userData.Email }, { $push: { 'arrayField': { $each: [userPurchagReq] } } }, (err, result) => {
       if (err) {
