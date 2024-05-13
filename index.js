@@ -155,6 +155,15 @@ app.post('/api/purchageRqrInit',async (req, res) => {
       Note        :"Under Process"
 
      };
+
+   // const result = await users.find({ username: userData.Email }).toArray();
+
+   // res.setHeader('Content-Type', 'application/json');
+   // res.status(200).send({
+   //   result: result,
+   //   loadToPass: result
+
+
     
 const promise1PushInProfi = new Promise(async (resolve,reject)=>{
            
@@ -187,7 +196,7 @@ const promise2PushInMain = new Promise(async (resolve, reject) => {
    // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
    res.status(200).send({
                          mainLoad:userPurchagReq,
-                         DocID:extUserProfiDocId,
+                        // DocID:extUserProfiDocId,
                          result:result
                         
                        });
