@@ -77,7 +77,7 @@ app.get('/api/bounceThPruchReqList',async (req, res) => {
     const db = client.db(dbName);
     const users = db.collection('userGenAll');
 
-   await users.find({email : userData.Email}).toArray(function(err, result) {
+   await users.find({username : userData.Email}).toArray(function(err, result) {
       if (err) {
         throw err;
 
