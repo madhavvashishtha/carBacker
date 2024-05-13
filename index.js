@@ -107,10 +107,7 @@ app.post('/api/purchageRqrInit',async (req, res) => {
       Price       :userData.Price       ,
 
      };
-   // const result = await users.insertOne(user);
-   
-   //var userGrab = await db.userGenAll.findOne({email :userData.Email+'' })
-   //  var extUserProfiDocId=userGrab._id;
+  
 
    
     await userDocCollat.updateOne({ email: userData.Email }, { $push: { 'arrayField': { $each: [userPurchagReq] } } }, (err, result) => {
@@ -134,8 +131,7 @@ app.post('/api/purchageRqrInit',async (req, res) => {
                            
                           });
        req.end();
-     // res.send('Array added to list successfully');
-     // client.close();
+   
     });
 
 
