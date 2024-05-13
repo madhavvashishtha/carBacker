@@ -76,25 +76,32 @@ app.post('/api/bounceThPruchReqList',async (req, res) => {
     const userData = JSON.parse(body);
     const db = client.db(dbName);
     const users = db.collection('userGenAll');
+    const result = await users.find({ username: userData.Email }).toArray();
 
-   await users.find({username : userData.Email}).toArray(function(err, result) {
-      if (err) {
-        res.status(404).send({
-          result:err, 
-          });
-        req.emit('error')
-        throw err;
-       
-      }
-   res.setHeader('Content-Type', 'text/plain');
-   // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
+    res.setHeader('Content-Type', 'application/json');
     res.status(200).send({
-      result:result, //try could be same data
-      loadToPass:result
-      });
-      req.emit('end')
-      });//await End
-    
+      result: result,
+      loadToPass: result
+    });
+
+//   await users.find({username : userData.Email}).toArray(function(err, result) {
+//      if (err) {
+//        res.status(404).send({
+//          result:err, 
+//          });
+//        req.emit('error')
+//        throw err;
+//       
+//      }
+//   res.setHeader('Content-Type', 'text/plain');
+//   // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
+//    res.status(200).send({
+//      result:result, //try could be same data
+//      loadToPass:result
+//      });
+//      req.emit('end')
+//      });//await End
+//    
   } else {
     res.status(404).json({ message: 'Not Found' });
   }
