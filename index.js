@@ -84,23 +84,7 @@ app.post('/api/bounceThPruchReqList',async (req, res) => {
       loadToPass: result
     });
 
-//   await users.find({username : userData.Email}).toArray(function(err, result) {
-//      if (err) {
-//        res.status(404).send({
-//          result:err, 
-//          });
-//        req.emit('error')
-//        throw err;
-//       
-//      }
-//   res.setHeader('Content-Type', 'text/plain');
-//   // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
-//    res.status(200).send({
-//      result:result, //try could be same data
-//      loadToPass:result
-//      });
-//      req.emit('end')
-//      });//await End
+
 //    
   } else {
     res.status(404).json({ message: 'Not Found' });
@@ -122,11 +106,6 @@ app.post('/api/purchageRqrInit',async (req, res) => {
     });
 
 
-//    import { EventEmitter } from 'node:events';
-//    const myEE = new EventEmitter();
-//    myEE.on('foo', () => console.log('a'));
-//    myEE.prependListener('foo', () => console.log('b'));
-//    myEE.emit('foo');
 
     await new Promise((resolve, reject) => {
       req.on('end', resolve);
@@ -155,48 +134,35 @@ app.post('/api/purchageRqrInit',async (req, res) => {
       Note        :"Under Process"
 
      };
-
-   // const result = await users.find({ username: userData.Email }).toArray();
-
-   // res.setHeader('Content-Type', 'application/json');
-   // res.status(200).send({
-   //   result: result,
-   //   loadToPass: result
-
-
     
-const promise1PushInProfi = new Promise(async (resolve,reject)=>{
+//const promise1PushInProfi = new Promise(async (resolve,reject)=>{
            
-    await userDocCollat.updateOne({  username: userData.Email }, { $push: { 'purchaseReqLis': { $each: [userPurchagReq] } } }, (err, result) => {
-      if (err) {
-        //throw err;
-        reject();
-      }
-      resolve();
+ // NOT NEED IN TWO PLACES FOR NOW 
+ //const resu01=   await userDocCollat.updateOne({  username: userData.Email }, { $push: { 'purchaseReqLis': { $each: [userPurchagReq] } } } );
+    // (err, result) => {
+    //  if (err) {
+    //    //throw err;
+    //    reject();
+    //  }
+    //  resolve();
+    //
+    //} );
+ 
     
-    });
-    
-          })
-const promise2PushInMain = new Promise(async (resolve, reject) => {
-  await allPurchageReqCollat.updateOne( {  username: userData.Email }, { $push: { 'purchaseReqLis': { $each: [userPurchagReq] } } }, { upsert: true }, (err, result) => {
-    if (err) {
-      //throw err;
-      reject();
-    }
-    resolve();
-  
-  });
-});
+        //  })
+//const promise2PushInMain = new Promise(async (resolve, reject) => {
+ const resultOfPush= await allPurchageReqCollat.updateOne( {  username: userData.Email }, { $push: { 'purchaseReqLis': { $each: [userPurchagReq] } } }, { upsert: true });
+//});
 
 
-const promisResult= await Promise.all([promise1PushInProfi, promise2PushInMain])
+//const promisResult= await Promise.all([promise1PushInProfi, promise2PushInMain])
 
 res.setHeader('Content-Type', 'text/plain');
 // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
 res.status(200).send({
                       mainLoad:userPurchagReq,
                      // DocID:extUserProfiDocId,
-                      result:promisResult
+                      result:resultOfPush
                      
                     });
  req.emit('end');
