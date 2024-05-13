@@ -80,25 +80,21 @@ app.post('/api/bounceThPruchReqList',async (req, res) => {
    await users.find({username : userData.Email}).toArray(function(err, result) {
       if (err) {
         res.status(404).send({
-          result:err, //try could be same data
-         // loadToPass:result
+          result:err, 
           });
-
         req.emit('error')
-
         throw err;
        
       }
-     // console.log(result);
-     // db.close();
    res.setHeader('Content-Type', 'text/plain');
    // res.setHeader('Content-Length', Buffer.byteLength({tokenGet:token}));
     res.status(200).send({
       result:result, //try could be same data
       loadToPass:result
       });
-      });//await End
       req.emit('end')
+      });//await End
+    
   } else {
     res.status(404).json({ message: 'Not Found' });
   }
