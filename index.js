@@ -75,7 +75,7 @@ app.post('/api/bounceThPruchReqList',async (req, res) => {
 
     const userData = JSON.parse(body);
     const db = client.db(dbName);
-    const users = db.collection('userGenAll');
+    const users = db.collection('userPurReq');
     const result = await users.find({ username: userData.Email }).toArray();
 
     res.setHeader('Content-Type', 'application/json');
