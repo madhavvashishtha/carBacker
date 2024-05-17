@@ -23,7 +23,7 @@ const bcrypt = require('bcryptjs');
 const dbName = 'usersAll';//'Cluster0';
 
 //let uri =  envs('DATABASE_URL')+'' //process.env.DATABASE_URL;
-const uri = 'mongodb+srv://madhav314159:rcilybQqqZyRXpt1@cluster0.nw8qfuz.mongodb.net/usersAll?retryWrites=true&w=majority&appName=Cluster0';;
+const uri ='' //pass mongoURI here
 //console.log(uri)
 const PORT= 5000;
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
